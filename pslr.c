@@ -1819,4 +1819,4 @@ void write_debug( const char* message, ... ) {
     vfprintf( stderr, message, argp );
     va_end(argp);
     return;
-}
+    }
