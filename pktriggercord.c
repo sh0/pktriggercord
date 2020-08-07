@@ -431,7 +431,7 @@ void camera_specific_init() {
 static void init_aperture_scale(pslr_status *st_new) {
     GtkWidget *pw = GW("aperture_scale");
     int min_ap=-1, max_ap=-1, current_ap = -1;
-    int i;
+    unsigned int i;
     if (st_new) {
         for (i=0; i<sizeof(aperture_tbl)/sizeof(aperture_tbl[0]); i++) {
             if (st_new->lens_min_aperture.nom == aperture_tbl[i]) {
@@ -1813,7 +1813,7 @@ G_MODULE_EXPORT gchar* shutter_scale_format_value_cb(GtkAction *action, gdouble 
 G_MODULE_EXPORT gchar* aperture_scale_format_value_cb(GtkAction *action, gdouble value) {
     int idx = rint(value);
     //printf("aperture value: %f\n", value);
-    if (idx < sizeof(aperture_tbl)/sizeof(aperture_tbl[0])) {
+    if (idx >= 0 && idx < (int)(sizeof(aperture_tbl)/sizeof(aperture_tbl[0]))) {
         return g_strdup_printf("f/%.1f", aperture_tbl[idx]/10.0);
     } else {
         return g_strdup_printf("(%f)", value);
@@ -1867,7 +1867,7 @@ G_MODULE_EXPORT void aperture_scale_value_changed_cb(GtkAction *action, gpointer
     a = gtk_range_get_value(GTK_RANGE(GW("aperture_scale")));
     idx = rint(a);
     assert(idx >= 0);
-    assert(idx < sizeof(aperture_tbl)/sizeof(aperture_tbl[0]));
+    assert(idx < (int)(sizeof(aperture_tbl)/sizeof(aperture_tbl[0])));
     value.nom = aperture_tbl[idx];
     value.denom = 10;
     DPRINT("aperture->%d/%d\n", value.nom, value.denom);
